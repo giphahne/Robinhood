@@ -6,7 +6,8 @@ my_trader = Robinhood()
 my_trader.login(username="YOUR_USERNAME", password="YOUR_PASSWORD")
 
 #Get stock information
-    #Note: Sometimes more than one instrument may be returned for a given stock symbol
+#Note: Sometimes more than one instrument may be
+#      returned for a given stock symbol
 stock_instrument = my_trader.instruments("GEVO")[0]
 
 #Get a stock's quote

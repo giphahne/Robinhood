@@ -4,6 +4,7 @@ import shelve
 
 from Robinhood import Robinhood
 
+
 def get_symbol_from_instrument_url(rb_client, url, db):
     instrument = {}
     if url in db:
@@ -55,4 +56,3 @@ with open('orders.csv', 'w') as output_file:
     dict_writer = csv.DictWriter(output_file, keys)
     dict_writer.writeheader()
     dict_writer.writerows(orders)
-

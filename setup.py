@@ -12,11 +12,8 @@ REQUIRES = [
     'requests>=2.13.0,<=2.18.4',
     'six>=1.10.0,<=1.11.0',
 ]
-TEST = [
-    'pytest~=3.0.0',
-    'pytest_cov~=2.4.0',
-    'flaky~=3.3.0'
-]
+TEST = ['pytest~=3.0.0', 'pytest_cov~=2.4.0', 'flaky~=3.3.0']
+
 
 def get_requirements(test_or_prod=False):
     """cover py2/3 stdlib extensions
@@ -29,7 +26,7 @@ def get_requirements(test_or_prod=False):
 
     """
     requires_list = []
-    if test_or_prod: #TEST
+    if test_or_prod:  #TEST
         requires_list = TEST
         if sys.version_info.major < 3:
             requires_list.append('configparser~=3.5.0')
@@ -39,6 +36,7 @@ def get_requirements(test_or_prod=False):
             requires_list.append('enum~=0.4.6')
 
     return requires_list
+
 
 def include_all_subfiles(*args):
     """Slurps up all files in a directory (non recursive) for data_files section
@@ -56,13 +54,14 @@ def include_all_subfiles(*args):
 
         for file in listdir(local_path):
             file_abspath = path.join(local_path, file)
-            if path.isdir(file_abspath):        #do not include sub folders
+            if path.isdir(file_abspath):  #do not include sub folders
                 continue
-            if '_local.cfg' in file_abspath:    #do not include secret files
+            if '_local.cfg' in file_abspath:  #do not include secret files
                 continue
             file_list.append(path_included + '/' + file)
 
     return file_list
+
 
 class PyTest(TestCommand):
     """PyTest cmdclass hook for test-at-buildtime functionality
@@ -75,29 +74,29 @@ class PyTest(TestCommand):
     def initialize_options(self):
         TestCommand.initialize_options(self)
         self.pytest_args = [
-            'Tests',
-            '--cov=Robinhood/',
-            '--cov-report=term-missing'
-        ]    #load defaults here
+            'Tests', '--cov=Robinhood/', '--cov-report=term-missing'
+        ]  #load defaults here
 
     def run_tests(self):
         import shlex
         #import here, cause outside the eggs aren't loaded
         import pytest
         pytest_commands = []
-        try:    #read commandline
+        try:  #read commandline
             pytest_commands = shlex.split(self.pytest_args)
         except AttributeError:  #use defaults
             pytest_commands = self.pytest_args
         errno = pytest.main(pytest_commands)
         exit(errno)
 
+
 setup(
     name='Robinhood',
     author='Jamone Kelly',
     author_email='TODO',
     url='https://github.com/Jamonek/Robinhood',
-    download_url='https://github.com/Jamonek/Robinhood/tarball/v' + __version__,
+    download_url='https://github.com/Jamonek/Robinhood/tarball/v' +
+    __version__,
     version=__version__,
     license='MIT',
     classifiers=[
@@ -106,13 +105,8 @@ setup(
     ],
     keywords='Robinhood trade API',
     packages=find_packages(),
-    data_files=[
-        ('docs', include_all_subfiles('docs')),
-        ('tests', include_all_subfiles('tests'))
-    ],
+    data_files=[('docs', include_all_subfiles('docs')),
+                ('tests', include_all_subfiles('tests'))],
     install_requires=get_requirements(),
     tests_require=get_requirements(True),
-    cmdclass={
-        'test':PyTest
-    }
-)
+    cmdclass={'test': PyTest})
